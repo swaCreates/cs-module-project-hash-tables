@@ -23,6 +23,7 @@ class HashTable:
     def __init__(self, capacity):
         # Your code here
         self.capacity = [None] * MIN_CAPACITY
+        
 
     def get_num_slots(self):
         """
@@ -78,18 +79,23 @@ class HashTable:
         # take every character in the string, and convert character to number
         # Convert each character into UTF-8 numbers
 
+        key_utf = key.encode()
+
         #return self.fnv1(key) % self.capacity
-        return self.djb2(key.encode()) % self.capacity
+        return self.djb2(key_utf) % self.capacity
 
     def put(self, key, value):
         """
         Store the value with the given key.
+
 
         Hash collisions should be handled with Linked List Chaining.
 
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
+        self.capacity[i] = value
 
 
     def delete(self, key):
@@ -101,6 +107,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
+        if self.capacity[i] == None:
+            return f'key is not found'
+        else:
+            self.capacity[i] = None
 
 
     def get(self, key):
@@ -112,6 +123,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
+        if self.capacity[i] == None:
+            return None
+        else:
+            return self.capacity[i]
 
 
     def resize(self, new_capacity):
