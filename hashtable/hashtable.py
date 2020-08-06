@@ -22,7 +22,7 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-
+        self.capacity = [None] * MIN_CAPACITY
 
     def get_num_slots(self):
         """
@@ -54,6 +54,7 @@ class HashTable:
         """
 
         # Your code here
+            
 
 
     def djb2(self, key):
@@ -63,15 +64,22 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-
+        hash = 5381
+        for char in key:
+            hash = (( hash << 5) + hash) + ord(char)
+        return hash & 0xFFFFFFFF
 
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
+
+        # take every character in the string, and convert character to number
+        # Convert each character into UTF-8 numbers
+
         #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.djb2(key.encode()) % self.capacity
 
     def put(self, key, value):
         """
