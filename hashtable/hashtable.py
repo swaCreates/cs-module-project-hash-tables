@@ -2,7 +2,7 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
-    def __init__(self, key, value):
+    def __init__(self, key= None, value= None):
         self.key = key
         self.value = value
         self.next = None
@@ -20,7 +20,7 @@ class HashTable:
     Implement this.
     """
 
-    def __init__(self, capacity):
+    def __init__(self, capacity): # or capacity = MIN_CAPACITY in constructor
         # Your code here
         self.capacity = MIN_CAPACITY
         self.size = 0
@@ -96,7 +96,23 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        self.storage[i] = value
+        # self.storage[i] = value
+        # self.size += 1
+        
+        if self.storage[i] is None: # if storage is empty
+            self.storage[i] = HashTableEntry(key, value)
+            self.size += 1
+        else:
+            cur = self.storage[i]
+            while cur.key != key and cur.next != None: # while we are looping / searching for the key & the next key is not none
+                cur = cur.next # move to next key
+            if cur.key == key: # if we find and already existing key
+                cur.value = value # update/overwrite that value
+            else: # else enter the new value
+                cur.next = HashTableEntry(key, value)
+                self.size += 1
+
+        # create linked list: insert at self.head (repeat)
 
 
     def delete(self, key):
@@ -112,8 +128,16 @@ class HashTable:
         if self.storage[i] == None:
             return f'key is not found'
         else:
-            self.storage[i] = None
-
+            # self.storage[i] = None
+            # self.size -= 1
+            cur = self.storage[i]
+            while cur.key != key and cur.next != None:
+                cur = cur.next
+            if cur.key == key:
+                cur.value = None
+                self.size -= 1
+            else:
+                return None
 
     def get(self, key):
         """
@@ -128,7 +152,13 @@ class HashTable:
         if self.storage[i] == None:
             return None
         else:
-            return self.storage[i]
+            cur = self.storage[i]
+            while cur.key != key and cur.next != None:
+                cur = cur.next
+            if cur.key == key:
+                return cur.value
+            else:
+                return None
 
 
     def resize(self, new_capacity):
